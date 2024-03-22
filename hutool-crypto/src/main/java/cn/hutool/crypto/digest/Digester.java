@@ -3,6 +3,7 @@ package cn.hutool.crypto.digest;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -112,6 +113,19 @@ public class Digester extends BouncyCastleSupport {
 	}
 
 	/**
+	 * 生成文件摘要
+	 *
+	 * @param data 被摘要数据
+	 * @param charset 编码
+	 * @return 摘要
+	 * @since 4.6.0
+	 */
+	public byte[] digest2(String data, Charset charset) {
+		return digest(StrUtil.bytes(data, charset));
+	}
+
+
+	/**
 	 * 生成文件摘要，并转为16进制字符串
 	 * 
 	 * @param data 被摘要数据
@@ -120,6 +134,18 @@ public class Digester extends BouncyCastleSupport {
 	 */
 	public String digestHex(String data, String charset) {
 		return HexUtil.encodeHexStr(digest(data, charset));
+	}
+
+	/**
+	 * 生成文件摘要，并转为16进制字符串
+	 *
+	 * @param data 被摘要数据
+	 * @param charset 编码
+	 * @return 摘要
+	 * @since 4.6.0
+	 */
+	public String digestHex(String data, Charset charset) {
+		return HexUtil.encodeHexStr(digest2(data, charset));
 	}
 
 	/**

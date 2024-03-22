@@ -464,6 +464,30 @@ public class MapUtil {
 		return strBuilder.toString();
 	}
 
+	public static <K, V> String join(Map<K, V> map, String separator, String keyValueSeparator, boolean isIgnoreNull, String... otherParams) {
+		final StringBuilder strBuilder = StrUtil.builder();
+		boolean isFirst = true;
+		if (isNotEmpty(map)) {
+			for (Entry<K, V> entry : map.entrySet()) {
+				if (false == isIgnoreNull || entry.getKey() != null && entry.getValue() != null) {
+					if (isFirst) {
+						isFirst = false;
+					} else {
+						strBuilder.append(separator);
+					}
+					strBuilder.append(Convert.toStr(entry.getKey())).append(keyValueSeparator).append(Convert.toStr(entry.getValue()));
+				}
+			}
+		}
+		// 补充其它字符串到末尾，默认无分隔符
+		if (ArrayUtil.isNotEmpty(otherParams)) {
+			for (String otherParam : otherParams) {
+				strBuilder.append(otherParam);
+			}
+		}
+		return strBuilder.toString();
+	}
+
 	// ----------------------------------------------------------------------------------------------- filter
 	/**
 	 * 过滤<br>

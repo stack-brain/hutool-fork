@@ -47,6 +47,11 @@ public class StrUtil {
 	public static final char C_BRACKET_START = CharUtil.BRACKET_START;
 	public static final char C_BRACKET_END = CharUtil.BRACKET_END;
 	public static final char C_COLON = CharUtil.COLON;
+	/**
+	 * 字符串常量：{@code "null"} <br>
+	 * 注意：{@code "null" != null}
+	 */
+	public static final String NULL = "null";
 
 	public static final String SPACE = " ";
 	public static final String TAB = "	";

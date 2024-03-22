@@ -11,7 +11,16 @@ public class MD5 extends Digester {
 	public MD5() {
 		super(DigestAlgorithm.MD5);
 	}
-	
+
+	/**
+	 * 创建MD5实例
+	 *
+	 * @return MD5
+	 * @since 4.6.0
+	 */
+	public static MD5 create() {
+		return new MD5();
+	}
 	/**
 	 * 构造
 	 * @param salt 盐值

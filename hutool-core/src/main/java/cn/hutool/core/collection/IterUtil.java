@@ -7,8 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Function;
 
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.text.StrJoiner;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -20,6 +22,18 @@ import cn.hutool.core.util.StrUtil;
  * @since 3.1.0
  */
 public class IterUtil {
+
+	/**
+	 * 获取{@link Iterator}
+	 *
+	 * @param iterable {@link Iterable}
+	 * @param <T>      元素类型
+	 * @return 当iterable为null返回{@code null}，否则返回对应的{@link Iterator}
+	 * @since 5.7.2
+	 */
+	public static <T> Iterator<T> getIter(Iterable<T> iterable) {
+		return null == iterable ? null : iterable.iterator();
+	}
 
 	/**
 	 * Iterable是否为空
@@ -282,6 +296,25 @@ public class IterUtil {
 			return null;
 		}
 		return join(iterable.iterator(), conjunction, prefix, suffix);
+	}
+
+	/**
+	 * 以 conjunction 为分隔符将集合转换为字符串<br>
+	 * 如果集合元素为数组、{@link Iterable}或{@link Iterator}，则递归组合其为字符串
+	 *
+	 * @param <T>         集合元素类型
+	 * @param iterator    集合
+	 * @param conjunction 分隔符
+	 * @param func        集合元素转换器，将元素转换为字符串
+	 * @return 连接后的字符串
+	 * @since 5.6.7
+	 */
+	public static <T> String join(Iterator<T> iterator, CharSequence conjunction, Function<T, ? extends CharSequence> func) {
+		if (null == iterator) {
+			return null;
+		}
+
+		return StrJoiner.of(conjunction).append(iterator, func).toString();
 	}
 	
 	/**
