@@ -1,5 +1,7 @@
 package cn.hutool.core.util;
 
+import cn.hutool.core.codec.Base16Codec;
+
 import java.awt.Color;
 import java.nio.charset.Charset;
 
@@ -67,6 +69,19 @@ public class HexUtil {
 	public static char[] encodeHex(String str, Charset charset) {
 		return encodeHex(StrUtil.bytes(str, charset), true);
 	}
+
+	/**
+	 * 将十六进制字符数组转换为字节数组
+	 *
+	 * @param hexData 十六进制字符串
+	 * @return byte[]
+	 * @throws UtilException 如果源十六进制字符数组是一个奇怪的长度，将抛出运行时异常
+	 * @since 5.6.6
+	 */
+	public static byte[] decodeHex(CharSequence hexData) {
+		return Base16Codec.CODEC_LOWER.decode(hexData);
+	}
+
 
 	/**
 	 * 将字节数组转换为十六进制字符数组
@@ -193,10 +208,7 @@ public class HexUtil {
 	 * @return byte[]
 	 */
 	public static byte[] decodeHex(String hexStr) {
-		if (StrUtil.isEmpty(hexStr)) {
-			return null;
-		}
-		return decodeHex(hexStr.toCharArray());
+		return decodeHex((CharSequence) hexStr);
 	}
 
 	// ---------------------------------------------------------------------------------------- Color
