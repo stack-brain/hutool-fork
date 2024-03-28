@@ -2,6 +2,7 @@ package cn.hutool.core.bean.copier;
 
 import java.util.Map;
 
+import cn.hutool.core.lang.Editor;
 import cn.hutool.core.map.MapUtil;
 
 /**
@@ -18,6 +19,11 @@ public class CopyOptions {
 	protected Class<?> editable;
 	/** 是否忽略空值，当源对象的值为null时，true: 忽略而不注入此值，false: 注入null */
 	protected boolean ignoreNullValue;
+	/**
+	 * 字段属性编辑器，用于自定义属性转换规则，例如驼峰转下划线等<br>
+	 * 规则为，{@link Editor#edit(Object)}属性为源对象的字段名称或key，返回值为目标对象的字段名称或key
+	 */
+	private Editor<String> fieldNameEditor;
 	/** 忽略的目标对象中属性列表，设置一个属性列表，不拷贝这些属性值 */
 	protected String[] ignoreProperties;
 	/** 是否忽略字段注入错误 */
@@ -79,6 +85,17 @@ public class CopyOptions {
 	}
 
 	/**
+	 * 转换字段名为编辑后的字段名
+	 *
+	 * @param fieldName 字段名
+	 * @return 编辑后的字段名
+	 * @since 5.4.2
+	 */
+	protected String editFieldName(String fieldName) {
+		return (null != this.fieldNameEditor) ? this.fieldNameEditor.edit(fieldName) : fieldName;
+	}
+
+	/**
 	 * 设置是否忽略空值，当源对象的值为null时，true: 忽略而不注入此值，false: 注入null
 	 * 
 	 * @param ignoreNullVall 是否忽略空值，当源对象的值为null时，true: 忽略而不注入此值，false: 注入null
@@ -86,6 +103,20 @@ public class CopyOptions {
 	 */
 	public CopyOptions setIgnoreNullValue(boolean ignoreNullVall) {
 		this.ignoreNullValue = ignoreNullVall;
+		return this;
+	}
+	/**
+	 * 设置字段属性编辑器，用于自定义属性转换规则，例如驼峰转下划线等<br>
+	 * 此转换器只针对源端的字段做转换，请确认转换后与目标端字段一致<br>
+	 * 当转换后的字段名为null时忽略这个字段<br>
+	 * 需要注意的是，当使用ValueProvider作为数据提供者时，这个映射是相反的，即fieldMapping中key为目标Bean的名称，而value是提供者中的key
+	 *
+	 * @param fieldNameEditor 字段属性编辑器，用于自定义属性转换规则，例如驼峰转下划线等
+	 * @return CopyOptions
+	 * @since 5.4.2
+	 */
+	public CopyOptions setFieldNameEditor(Editor<String> fieldNameEditor) {
+		this.fieldNameEditor = fieldNameEditor;
 		return this;
 	}
 
